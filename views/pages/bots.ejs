@@ -1,0 +1,163 @@
+<!-- JQuery DataTable Css -->
+<link href="/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+
+<div class="block-header">
+    <h2>
+        Quản lý bot
+
+    </h2>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+
+            <div class="body">
+
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <thead>
+                        <tr>
+                            <th hidden="true">ID</th>
+                            <th>Server</th>
+                         
+                            <th>Tên</th>
+                            <th>Kiểu</th>
+                            <th>Khu vực</th>
+                            <th>Số vàng</th>
+                            <th>Tọa độ</th>
+                            <th>Mã vps</th>
+                            <th>IP vps</th>
+                           
+                            <th>Trạng thái</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i=0; i < bots.length; i++) { %>
+                            <tr>
+                                <td hidden="true"><%=bots[i]._id%></td>
+                                <td> <span class="label label-info">Server <%=bots[i].Server%></span></td>
+                          
+                               
+                                <td><%=bots[i].Name%></td>
+                                <td><span class="label label-<%=bots[i].TypeBot==1?"warning":"danger"%>"><%=bots[i].TypeBot==1?"Nạp vàng":"Rút Vàng"%></span></td>
+                                <td><%=bots[i].Zone%></td>
+                                <td><%= String(Math.round(bots[i].Gold)).replace(/(.)(?=(\d{3})+$)/g,'$1,')%> </td>
+                                <td>x<%=bots[i].ToaDoX%>, y<%=bots[i].ToaDoY%></td>
+                                <td><%=bots[i].CodeVps%></td>
+                                <td><%=bots[i].IpVps%></td>
+                             
+                                <td>
+                                    <span class="label label-<%=bots[i].Status==-1?"warning":bots[i].Status!=2?"success":"danger"%>"><%-bots[i].Status%>
+                                        <%=bots[i].Status==-1?"Đang chờ": bots[i].Status!=2?"Hoạt động":"SAI MK"%> (<%= Math.floor((new Date() - bots[i].updatedAt) / 1000); %>s trước)</span>
+                                </td>
+                             
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="change" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">Chỉnh sửa</h4>
+            </div>
+            <div class="modal-body">
+                <div class="body">
+                    <span hidden="true" id="IDdoc" ></span>
+                    <h5 class="card-inside-title">Server</h5>
+
+                    <div class="form-group">
+                        <div class="form-line">
+                            <select id="Server" class="form-control show-tick">
+                                <option value="">-- Vui lòng chọn --</option>
+                                <option value="1">Server 1</option>
+                                <option value="2">Server 2</option>
+                                <option value="3">Server 3</option>
+                                <option value="4">Server 4</option>
+                                <option value="5">Server 5</option>
+                                <option value="6">Server 6</option>
+                                <option value="7">Server 7</option>
+                                <option value="8">Server 8</option>
+                                <option value="9">Server 9</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <h5 class="card-inside-title">Loại bot</h5>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <select id="LoaiBot" class="form-control show-tick">
+                                <option value="">-- Vui lòng chọn --</option>
+                                <option value="1">Nạp vàng</option>
+                                <option value="2">Rút vàng</option>
+                        
+                            </select>
+                        </div>
+                    </div>
+                    <h5 class="card-inside-title">Tài khoản</h5>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input id="Username" type="text" class="form-control" placeholder="Tài khoản">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="card-inside-title">Mật khẩu:</h5>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input id="Password" type="text" class="form-control" placeholder="Mật khẩu"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="card-inside-title">Khu vực:</h5>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input  id="Zone" type="number" class="form-control" placeholder="Khu vực"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="card-inside-title">Tọa độ:</h5>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input id="ToaDo" type="text" class="form-control" placeholder="Khu vực"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="SaveChange()" class="btn btn-link waves-effect">Lưu</button>
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   
+</script>
+<script src="/plugins/jquery-datatable/jquery.dataTables.js"></script>
+<script src="/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+<script src="/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+<script src="/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+<script src="/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+<script src="/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+<script src="/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+<script src="/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+<script src="/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+<script src="/js/pages/tables/jquery-datatable.js"></script>

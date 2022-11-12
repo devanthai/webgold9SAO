@@ -1,0 +1,37 @@
+<input id="username" type="text">
+<input id="password" type="password">
+<input id="code" type="number">
+<button onclick="login()">Kamezoko</button>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<script>
+    login = ()=>{
+        const username = document.getElementById("username").value
+        const password = document.getElementById("password").value
+        const code = document.getElementById("code").value
+      
+        $.ajax({
+            type: "POST",
+            url: "/auth",
+            datatype: 'json',
+            data: {
+                taikhoan: username,
+                matkhau: password,
+                code: code,
+            },
+            success: (data) => {
+                if(data=="thanhcong")
+                {
+                    window.location = "/"
+                }
+                else
+                {
+
+                alert(data)
+                }
+            }
+        })
+    }
+</script>
